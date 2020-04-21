@@ -1,0 +1,72 @@
+<div class="page-header">
+    <h3>Dettaglio Risorsa</h3>
+</div>
+
+<div *ngIf="risorsa">
+    <dl class="row">
+        <dt class="col-sm-4">
+            Nome:
+        </dt>
+        <dd class="col-sm-8">
+            {{risorsa.nome}}
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-4">
+            Cognome:
+        </dt>
+        <dd class="col-sm-8">
+            {{risorsa.cognome}}
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-4">
+            Data di nascita:
+        </dt>
+        <dd class="col-sm-8">
+            {{risorsa.dataNascita}}
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-4">
+            Settore:
+        </dt>
+        <dd class="col-sm-8">
+            {{risorsa.settore.descrizione}}
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-4">
+            Codice Settore:
+        </dt>
+        <dd class="col-sm-8">
+            {{risorsa.settore.codice}}
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-4">
+            Stipendio:
+        </dt>
+        <dd class="col-sm-8">
+            {{risorsa.stipendioRAL | currency:'EUR'}}
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-4">
+            Residenza:
+        </dt>
+        <dd class="col-sm-8">
+            <ul>
+                <li>Comune: {{risorsa.residenza?.comune?.descrizione}}</li>
+                <li>Provincia: {{risorsa.residenza?.provincia?.codice}}</li>
+                <li>Regione: {{risorsa.residenza?.regione?.descrizione}}</li>
+            </ul>
+        </dd>
+    </dl>
+</div>
+
+
+<button class='btn btn-outline-secondary' (click)='goBack()' style='width:80px'>
+    <i class='fa fa-chevron-left'></i>
+    Back
+</button>
