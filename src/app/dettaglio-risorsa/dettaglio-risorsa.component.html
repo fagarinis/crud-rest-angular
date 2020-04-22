@@ -55,12 +55,10 @@
         <dt class="col-sm-4">
             Residenza:
         </dt>
-        <dd class="col-sm-8">
-            <ul>
-                <li>Comune: {{risorsa.residenza?.comune?.descrizione}}</li>
-                <li>Provincia: {{risorsa.residenza?.provincia?.codice}}</li>
-                <li>Regione: {{risorsa.residenza?.regione?.descrizione}}</li>
-            </ul>
+        <dd class="col-sm-8" *ngIf="risorsa.residenza">
+            {{risorsa.residenza?.comune?.descrizione}},
+            {{risorsa.residenza?.provincia?.codice}},
+            {{risorsa.residenza?.regione?.descrizione}}
         </dd>
     </dl>
 </div>

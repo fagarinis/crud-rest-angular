@@ -1,0 +1,81 @@
+<div class="page-header">
+    <h3>{{risorsaModel._id != undefined? 'Modifica' : 'Aggiungi'}} Risorsa</h3>
+</div>
+
+<div *ngIf="risorsaModel">
+    <div class="row">
+        <div class="col-sm-4">
+            <form #risorsaForm="ngForm" (ngSubmit)="submitForm()">
+                <div class="form-group ">
+                    <label for="nomeId">Nome</label>
+                    <input name="nome" type="text" class="form-control" id="nomeId" [(ngModel)]="risorsaModel.nome"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cognomeId">Cognome</label>
+                    <input name="cognome" type="text" class="form-control" id="cognomeId"
+                        [(ngModel)]="risorsaModel.cognome" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="dataNascitaId">Data di nascita</label>
+                    <input name="dataNascita" type="date" class="form-control" id="dataNascitaId"
+                        [(ngModel)]="risorsaModel.dataNascita" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="dataNascitaId">Settore</label>
+                    <select #settoreSelect name="settore" class="form-control" id="settoreId"
+                        [(ngModel)]="risorsaModel.settore" required>
+                        <option *ngFor="let settoreItem of settori"
+                            [selected]="settoreItem.codice == risorsaModel.settore.codice" [ngValue]="settoreItem">
+                            {{settoreItem.descrizione}}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="stipendioRALId">Stipendio</label>
+                    <input name="stipendioRAL" type="number" class="form-control" id="stipendioRALId"
+                        [(ngModel)]="risorsaModel.stipendioRAL" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Residenza</label>
+                    <select required name="regione" class="form-control" id="regioneId" #regioneSelect
+                        (ngModelChange)="onRegioneChange($event)" [(ngModel)]="risorsaModel.residenza.regione">
+                        <option [ngValue]="notSelected">--Seleziona Regione--</option>
+                        <option *ngFor="let regioneItem of regioni" [ngValue]="regioneItem">
+                            {{regioneItem.descrizione}}
+                        </option>
+                    </select>
+                    <select required name="provincia" class="form-control" id="provinciaId" #provinciaSelect
+                        [disabled]="!province.length || !regione" (ngModelChange)="onProvinciaChange($event)"
+                        [(ngModel)]="risorsaModel.residenza.provincia">
+                        <option [ngValue]="notSelected" *ngIf="province.length">--Seleziona Provincia--</option>
+                        <option *ngFor="let provinciaItem of province" [ngValue]="provinciaItem">
+                            {{provinciaItem.descrizione}}
+                        </option>
+                    </select>
+                    <select required name="comune" class="form-control" id="comuneId" #comuneSelect
+                        [disabled]="!comuni.length || !provincia" [(ngModel)]="risorsaModel.residenza.comune">
+                        <option [ngValue]="notSelected" *ngIf="comuni.length">--Seleziona Comune--</option>
+                        <option *ngFor="let comuneItem of comuni" [ngValue]="comuneItem">
+                            {{comuneItem.descrizione}}
+                        </option>
+                    </select>
+                </div>
+                
+                <button [disabled]="!risorsaForm.form.valid" type="submit" class="btn btn-success mb-3">Submit</button>
+            </form>
+        </div>
+        <div class=col-sm-8 *ngIf="showJson">
+            <pre>{{risorsaModel | json}}</pre>
+        </div>
+    </div>
+    <button class='btn btn-outline-secondary mb-3' (click)='goBack()' style='width:80px'>
+        <i class='fa fa-chevron-left'></i>
+        Back
+    </button>
+</div>

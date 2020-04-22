@@ -1,5 +1,8 @@
 <h3>Lista Risorse</h3>
 
+<button type="button" class="btn btn-lg btn-outline-success mb-3"
+                        [routerLink]="['/risorse', 0,'modifica']">Aggiungi</button>
+
 <table *ngIf="risorse && risorse.length" class="table table-hover">
     <thead class="thead-dark">
         <tr>
@@ -19,9 +22,12 @@
             <td>{{risorsaItem.stipendioRAL | currency:'EUR'}}</td>
             <td>
                 <div class="btn-group btn-group" role="group">
-                    <button type="button" class="btn btn-sm btn-outline-primary" [routerLink]="['/risorse', risorsaItem._id]"><small>Dettaglio</small></button>
-                    <button type="button" class="btn btn-sm btn-outline-primary"><small>Modifica</small></button>
-                    <button type="button" class="btn btn-sm btn-outline-danger"><small>Elimina</small></button>
+                    <button type="button" class="btn btn-sm btn-outline-primary"
+                        [routerLink]="['/risorse', risorsaItem._id]"><small>Dettaglio</small></button>
+                    <button type="button" class="btn btn-sm btn-outline-primary"
+                        [routerLink]="['/risorse', risorsaItem._id,'modifica']"><small>Modifica</small></button>
+                    <button type="button" class="btn btn-sm btn-outline-danger"
+                        (click)="eliminaRisorsa(risorsaItem)"><small>Elimina</small></button>
                 </div>
 
             </td>

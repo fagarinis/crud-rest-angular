@@ -10,7 +10,7 @@ import { Risorsa } from './risorsa';
 })
 export class RisorsaService {
 
-  private resourcesUrl = 'http://212.237.32.76:3000/risorsa';
+  private resourcesUrl = 'http://crud-rest.apps.37.187.91.6.nip.io/risorsa';
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
@@ -25,10 +25,35 @@ export class RisorsaService {
   }
 
   getRisorsa(id: string): Observable<Risorsa> {
-    return this.http.get<Risorsa>(this.resourcesUrl + '/' + id)
+    const url = this.resourcesUrl + '/' + id;
+
+    return this.http.get<Risorsa>(url)
       .pipe(
-        catchError(this.handleError<Risorsa>('getRisorsa', null))
-      )
+        catchError(this.handleError<Risorsa>('getRisorsa'))
+      );
+  }
+
+  addRisorsa(risorsa: Risorsa): Observable<Risorsa>{
+    return this.http.post<Risorsa>(this.resourcesUrl, risorsa, this.httpOptions)
+      .pipe(
+        catchError(this.handleError<Risorsa>('addRisorsa'))
+      );
+  }
+
+  updateRisorsa(risorsa: Risorsa): Observable<Risorsa>{
+    return this.http.put<Risorsa>(this.resourcesUrl, risorsa, this.httpOptions)
+      .pipe(
+        catchError(this.handleError<Risorsa>('updateRisorsa'))
+      );
+  }
+
+  deleteRisorsa(id: string): Observable<Risorsa> {
+    const url = this.resourcesUrl + '/' + id;
+
+    return this.http.delete<Risorsa>(url, this.httpOptions)
+      .pipe(
+        catchError(this.handleError<Risorsa>('deleteRisorsa', null))
+      );
   }
 
   /**

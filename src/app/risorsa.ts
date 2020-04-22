@@ -1,29 +1,24 @@
-export interface Risorsa {
-    _id: string,
-    nome: string,
-    cognome: string,
-    dataNascita: string,
+import { Settore } from './settore';
+import { Regione, Provincia, Comune } from './place';
 
+export class Risorsa {
+    _id: string = "";
+    nome: string = "";
+    cognome: string = "";
+    dataNascita: string = "";
+    settore: Settore = new Settore();
+    stipendioRAL: number = 0;
     residenza: {
-        regione: {
-            codice: number,
-            descrizione: string
-        },
-        provincia: {
-            codice: number,
-            descrizione: string
-        },
-        comune: {
-            codice: number,
-            descrizione: string
+        regione: Regione,
+        provincia: Provincia,
+        comune: Comune
+    };
+
+    constructor(){
+        this.residenza = {
+            regione: new Regione(),
+            provincia: new Provincia(),
+            comune: new Comune()
         }
-    },
-    settore: {
-        _id: string,
-        codice: string,
-        descrizione: string
     }
-
-    stipendioRAL: number,
-
 }

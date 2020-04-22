@@ -17,7 +17,7 @@ export class DettaglioRisorsaComponent implements OnInit {
   risorsa: Risorsa;
 
   constructor(
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private location: Location,
     private risorsaService: RisorsaService) { }
 
@@ -25,9 +25,7 @@ export class DettaglioRisorsaComponent implements OnInit {
     const id: string = this.route.snapshot.paramMap.get('id');
     this.risorsaService.getRisorsa(id).subscribe(risorsaInput => {
       this.risorsa = risorsaInput;
-      console.log(this.risorsa);
     });
-
   }
 
   goBack(): void {
