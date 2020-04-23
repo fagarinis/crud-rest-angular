@@ -74,31 +74,23 @@ export class ModificaRisorsaComponent implements OnInit {
 
   populateSettori(): void {
     this.settoreService.getAllSettori().subscribe(settoriInput => {
-      settoriInput.map(settoreInput => {
-        this.mantieniAttributi(settoreInput, "codice", "descrizione");
-        this.settori.push(settoreInput);
-
-        if (settoreInput.codice == this.risorsaModel.settore.codice) { // per far funzionare il binding in preselezione associo l'oggetto al model
-          this.risorsaModel.settore = settoreInput;
-        }
-      })
+      this.settori = settoriInput.map(settoreInput => this.mantieniAttributi(settoreInput, "codice", "descrizione"));
+      // Preselezione: per far funzionare il binding in preselezione associo l'oggetto al model
+      this.risorsaModel.settore = settoriInput.find(s => s.codice == this.risorsaModel.settore?.codice);
     });
   }
 
   populateResidenza(): void {
     this.geoService.getRegioni().subscribe(regioniInput => {
-      this.regioni = [];
-      regioniInput.map(regioneInput => {
-        this.mantieniAttributi(regioneInput, "codice", "descrizione");
-        this.regioni.push(regioneInput);
+      this.regioni = regioniInput.map(regioneItem => this.mantieniAttributi(regioneItem, "codice", "descrizione"));
+      // Preselezione: per far funzionare il binding in preselezione associo l'oggetto al model
+      this.risorsaModel.residenza.regione = regioniInput.find(r => r.codice == this.regione?.codice);
 
-        if (this.regione.codice == regioneInput.codice) { // Preselezione
-          this.regione = regioneInput;
-        }
-      });
-
-      if (this.risorsaModel.residenza && this.risorsaModel.residenza.regione) {
+      if (this.risorsaModel.residenza.regione) {
         this.populateProvince(this.regione.codice);
+      }
+      else{
+        this.regione = this.notSelected;
       }
     });
   }
@@ -110,12 +102,13 @@ export class ModificaRisorsaComponent implements OnInit {
       return;
     }
     this.geoService.getProvince(codiceRegione).subscribe(provinceInput => {
-      provinceInput.forEach(provincia => this.mantieniAttributi(provincia, "codice", "descrizione"));
-      this.province = provinceInput;
+      this.province = provinceInput.map(provinciaItem => this.mantieniAttributi(provinciaItem, "codice", "descrizione"));
+      // Preselezione: per far funzionare il binding in preselezione associo l'oggetto al model
       this.provincia = provinceInput.find(p => p.codice == this.provincia?.codice);
       if (!this.provincia) {
         this.provincia = this.notSelected;
         this.comune = this.notSelected;
+        this.comuni = [];
       }
       else {
         this.populateComuni(this.provincia.codice);
@@ -128,10 +121,9 @@ export class ModificaRisorsaComponent implements OnInit {
       this.comuni = [];
       return;
     }
-    console.log("Popola comuni")
     this.geoService.getComuni(codiceProvincia).subscribe(comuniInput => {
-      comuniInput.forEach(comune => this.mantieniAttributi(comune, "codice", "descrizione"));
-      this.comuni = comuniInput;
+      this.comuni = comuniInput.map(comune => this.mantieniAttributi(comune, "codice", "descrizione"));
+      // Preselezione: per far funzionare il binding in preselezione associo l'oggetto al model
       this.comune = comuniInput.find(c => c.codice == this.comune?.codice);
       if (!this.comune) {
         this.comune = this.notSelected;
@@ -159,11 +151,10 @@ export class ModificaRisorsaComponent implements OnInit {
   }
 
   /**
-   *  Rimuove tutti i parametri dall'oggetto tranne quelli specificati
-   * @param place 
+   *  Rimuove tutti i parametri dall'oggetto obj tranne quelli specificati
    * @returns oggetto senza i parametri non specificati
    */
-  mantieniAttributi(obj: any, ...attributiDaMantenere: string[]): any {
+  private mantieniAttributi(obj: any, ...attributiDaMantenere: string[]): any {
     for (let key of Object.keys(obj)) {
       if (!attributiDaMantenere.includes(key)) {
         delete obj[key];

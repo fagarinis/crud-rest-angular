@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Risorsa } from './risorsa';
 
@@ -20,7 +20,7 @@ export class RisorsaService {
   getAllRisorse(): Observable<Risorsa[]> {
     return this.http.get<Risorsa[]>(this.resourcesUrl)
       .pipe(
-        catchError(this.handleError<Risorsa[]>('getAllRisorse', []))
+        catchError(this.handleError('getAllRisorse', []))
       );
   }
 
@@ -29,21 +29,21 @@ export class RisorsaService {
 
     return this.http.get<Risorsa>(url)
       .pipe(
-        catchError(this.handleError<Risorsa>('getRisorsa'))
+        catchError(this.handleError('getRisorsa'))
       );
   }
 
   addRisorsa(risorsa: Risorsa): Observable<Risorsa>{
     return this.http.post<Risorsa>(this.resourcesUrl, risorsa, this.httpOptions)
       .pipe(
-        catchError(this.handleError<Risorsa>('addRisorsa'))
+        catchError(this.handleError('addRisorsa'))
       );
   }
 
   updateRisorsa(risorsa: Risorsa): Observable<Risorsa>{
     return this.http.put<Risorsa>(this.resourcesUrl, risorsa, this.httpOptions)
       .pipe(
-        catchError(this.handleError<Risorsa>('updateRisorsa'))
+        catchError(this.handleError('updateRisorsa'))
       );
   }
 
@@ -52,7 +52,7 @@ export class RisorsaService {
 
     return this.http.delete<Risorsa>(url, this.httpOptions)
       .pipe(
-        catchError(this.handleError<Risorsa>('deleteRisorsa', null))
+        catchError(this.handleError('deleteRisorsa', null))
       );
   }
 
@@ -62,8 +62,8 @@ export class RisorsaService {
 * @param operation - name of the operation that failed
 * @param result - optional value to return as the observable result
 */
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
+  private handleError(operation = 'operation', result?: any) {
+    return (error: any): Observable<any> => {
 
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
@@ -72,7 +72,7 @@ export class RisorsaService {
       console.log(`${operation} failed: ${error.message}`);
 
       // Let the app keep running by returning an empty result.
-      return of(result as T);
+      return throwError(error);
     };
   }
 

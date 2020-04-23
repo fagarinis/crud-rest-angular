@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { NgApexchartsModule } from "ng-apexcharts";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,6 +10,10 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { DettaglioRisorsaComponent } from './dettaglio-risorsa/dettaglio-risorsa.component';
 import { ModificaRisorsaComponent } from './modifica-risorsa/modifica-risorsa.component';
+import { PieChartComponent } from './pie-chart/pie-chart.component';
+
+
+
 
 @NgModule({
   declarations: [
@@ -16,6 +21,7 @@ import { ModificaRisorsaComponent } from './modifica-risorsa/modifica-risorsa.co
     ListaRisorseComponent,
     DettaglioRisorsaComponent,
     ModificaRisorsaComponent,
+    PieChartComponent,
   ],
   imports: [
     BrowserModule,
@@ -23,6 +29,7 @@ import { ModificaRisorsaComponent } from './modifica-risorsa/modifica-risorsa.co
     HttpClientModule,
     FormsModule,
     RouterModule,
+    NgApexchartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

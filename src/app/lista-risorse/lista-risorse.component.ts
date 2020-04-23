@@ -36,10 +36,10 @@ export class ListaRisorseComponent implements OnInit {
     if (confirm("Eliminare " + nomeCognome + "?")) {
       this.risorsaService.deleteRisorsa(risorsa._id).subscribe(
         input => { console.log(id + " eliminato con successo") },
-        err => { console.log("cancellazione fallita") },
+        err => { console.error("errore nella cancellazione", err) },
         () => {
           this.router.navigate(['/risorse'])
-          this.populateRisorse();
+          this.populateRisorse(); // Aggiorna la lista dopo la cancellazione
         }
       );
     }
