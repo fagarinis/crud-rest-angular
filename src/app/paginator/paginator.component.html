@@ -1,0 +1,17 @@
+<nav aria-label="...">
+    <ul class="pagination">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+            <span class="page-link btn" (click)="onClickPage(currentPage-1)">Previous</span>
+        </li>
+        <li class="page-item" [class.active]="i+startPage == currentPage"
+            *ngFor="let page of [].constructor(numberOfPageButtonToShow()); let i=index">
+            <a class="page-link btn" (click)="onClickPage(i+startPage)">
+                {{i+startPage}}
+            </a>
+        </li>
+
+        <li class="page-item" [class.disabled]="currentPage >= numberOfPages">
+            <span class="page-link btn" (click)="onClickPage(currentPage+1)">Next</span>
+        </li>
+    </ul>
+</nav>

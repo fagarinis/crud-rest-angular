@@ -6,7 +6,7 @@ export class Risorsa {
     nome: string = "";
     cognome: string = "";
     dataNascita: string = "";
-    settore: Settore = new Settore();
+    settore: Settore = null;
     stipendioRAL: number = 0;
     residenza: {
         regione: Regione,
@@ -16,9 +16,9 @@ export class Risorsa {
 
     constructor(){
         this.residenza = {
-            regione: new Regione(),
-            provincia: new Provincia(),
-            comune: new Comune()
+            regione: null,
+            provincia: null,
+            comune: null
         }
     }
 }

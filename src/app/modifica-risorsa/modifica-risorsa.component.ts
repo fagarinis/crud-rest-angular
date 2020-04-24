@@ -74,93 +74,47 @@ export class ModificaRisorsaComponent implements OnInit {
 
   populateSettori(): void {
     this.settoreService.getAllSettori().subscribe(settoriInput => {
-      this.settori = settoriInput.map(settoreInput => this.mantieniAttributi(settoreInput, "codice", "descrizione"));
-      // Preselezione: per far funzionare il binding in preselezione associo l'oggetto al model
-      this.risorsaModel.settore = settoriInput.find(s => s.codice == this.risorsaModel.settore?.codice);
+      this.settori = settoriInput;
     });
   }
 
   populateResidenza(): void {
     this.geoService.getRegioni().subscribe(regioniInput => {
-      this.regioni = regioniInput.map(regioneItem => this.mantieniAttributi(regioneItem, "codice", "descrizione"));
-      // Preselezione: per far funzionare il binding in preselezione associo l'oggetto al model
-      this.risorsaModel.residenza.regione = regioniInput.find(r => r.codice == this.regione?.codice);
-
+      this.regioni = regioniInput;
       if (this.risorsaModel.residenza.regione) {
         this.populateProvince(this.regione.codice);
       }
-      else{
-        this.regione = this.notSelected;
-      }
+
     });
   }
 
   populateProvince(codiceRegione: number): void {
-    if (!codiceRegione && codiceRegione !== 0) {
-      this.province = [];
-      this.comuni = [];
-      return;
-    }
     this.geoService.getProvince(codiceRegione).subscribe(provinceInput => {
-      this.province = provinceInput.map(provinciaItem => this.mantieniAttributi(provinciaItem, "codice", "descrizione"));
-      // Preselezione: per far funzionare il binding in preselezione associo l'oggetto al model
-      this.provincia = provinceInput.find(p => p.codice == this.provincia?.codice);
-      if (!this.provincia) {
-        this.provincia = this.notSelected;
-        this.comune = this.notSelected;
-        this.comuni = [];
-      }
-      else {
+      this.province = provinceInput;
+      if (this.risorsaModel.residenza.provincia) {
         this.populateComuni(this.provincia.codice);
       }
     });
   }
 
   populateComuni(codiceProvincia: string): void {
-    if (!codiceProvincia) {
-      this.comuni = [];
-      return;
-    }
     this.geoService.getComuni(codiceProvincia).subscribe(comuniInput => {
-      this.comuni = comuniInput.map(comune => this.mantieniAttributi(comune, "codice", "descrizione"));
-      // Preselezione: per far funzionare il binding in preselezione associo l'oggetto al model
-      this.comune = comuniInput.find(c => c.codice == this.comune?.codice);
-      if (!this.comune) {
-        this.comune = this.notSelected;
-      }
+      this.comuni = comuniInput;
     });
   }
 
   onRegioneChange(regione: Regione): void {
-    if (!regione) {
-      this.province = [];
-      this.comuni = [];
-      return;
-    }
+    this.comuni = [];
+    this.comune = null;
+    this.provincia = null;
     console.log("onRegioneChange codice regione selezionata: " + regione.codice)
     this.populateProvince(regione.codice);
   }
 
   onProvinciaChange(provincia: Provincia): void {
-    if (!provincia) {
-      this.comuni = [];
-      return;
-    }
+    this.comune = null;
     console.log("onProvinciaChange codice provincia selezionata: " + provincia.codice)
     this.populateComuni(provincia.codice);
-  }
-
-  /**
-   *  Rimuove tutti i parametri dall'oggetto obj tranne quelli specificati
-   * @returns oggetto senza i parametri non specificati
-   */
-  private mantieniAttributi(obj: any, ...attributiDaMantenere: string[]): any {
-    for (let key of Object.keys(obj)) {
-      if (!attributiDaMantenere.includes(key)) {
-        delete obj[key];
-      }
-    }
-    return obj
   }
 
   submitForm(): void {
@@ -184,6 +138,11 @@ export class ModificaRisorsaComponent implements OnInit {
       console.log("risorsa aggiunta con successo");
       this.goBack();
     });
+  }
+
+
+  compareFn(c1: any, c2: any): boolean {
+    return c1 && c2 ? c1.codice == c2.codice : c1 == c2;
   }
 
   goBack(): void {

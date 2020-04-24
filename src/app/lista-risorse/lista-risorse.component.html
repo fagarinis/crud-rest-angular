@@ -3,19 +3,20 @@
 <button type="button" class="btn btn-lg btn-outline-success mb-3"
                         [routerLink]="['/risorse', 0,'modifica']">Aggiungi</button>
 
+<app-paginator (dataShown)="onChangePage($event)" [data]="risorse" [forPage] ="10"></app-paginator>
 <table *ngIf="risorse && risorse.length" class="table table-hover">
     <thead class="thead-dark">
         <tr>
-            <th scope="col">Nome</th>
-            <th scope="col">Cognome</th>
-            <th scope="col">Settore</th>
-            <th scope="col">Stipendio</th>
-            <th scope="col">Action</th>
+            <th style="width: 15%" scope="col">Nome</th>
+            <th style="width: 15%" scope="col">Cognome</th>
+            <th style="width: 15%" scope="col">Settore</th>
+            <th style="width: 15%" scope="col">Stipendio</th>
+            <th style="width: 15%" scope="col">Action</th>
         </tr>
 
     </thead>
     <tbody>
-        <tr *ngFor="let risorsaItem of risorse">
+        <tr *ngFor="let risorsaItem of risorseToShow">
             <td>{{risorsaItem.nome}}</td>
             <td>{{risorsaItem.cognome}}</td>
             <td>{{risorsaItem.settore.descrizione}}</td>

@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { DettaglioRisorsaComponent } from './dettaglio-risorsa/dettaglio-risorsa.component';
 import { ModificaRisorsaComponent } from './modifica-risorsa/modifica-risorsa.component';
 import { PieChartComponent } from './pie-chart/pie-chart.component';
+import { PaginatorComponent } from './paginator/paginator.component';
 
 
 
@@ -22,6 +23,7 @@ import { PieChartComponent } from './pie-chart/pie-chart.component';
     DettaglioRisorsaComponent,
     ModificaRisorsaComponent,
     PieChartComponent,
+    PaginatorComponent,
   ],
   imports: [
     BrowserModule,

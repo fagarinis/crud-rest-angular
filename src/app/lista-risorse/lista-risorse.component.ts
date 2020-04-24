@@ -13,6 +13,7 @@ import { Location } from '@angular/common';
 export class ListaRisorseComponent implements OnInit {
 
   risorse: Risorsa[] = [];
+  risorseToShow: Risorsa[] = [];
 
   constructor(
     private risorsaService: RisorsaService,
@@ -43,6 +44,10 @@ export class ListaRisorseComponent implements OnInit {
         }
       );
     }
+  }
+
+  onChangePage(risorseToShowInput: Risorsa[]){
+    this.risorseToShow = risorseToShowInput;
   }
 
 }
