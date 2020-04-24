@@ -19,17 +19,23 @@ export class DettaglioRisorsaComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private location: Location,
-    private risorsaService: RisorsaService) { }
+    private risorsaService: RisorsaService) { 
+    }
 
   ngOnInit(): void {
     const id: string = this.route.snapshot.paramMap.get('id');
     this.risorsaService.getRisorsa(id).subscribe(risorsaInput => {
       this.risorsa = risorsaInput;
+      console.log(this.risorsa)
     });
   }
 
   goBack(): void {
     this.location.back();
+  }
+
+  getEta(risorsa: Risorsa) : number {
+      return Risorsa.getEta(risorsa);
   }
 
 }

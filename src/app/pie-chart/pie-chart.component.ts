@@ -23,22 +23,22 @@ export class PieChartComponent implements OnInit {
   @ViewChild("chart") chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
-  chartColors = ['#FFCDD2', '#9E9E9E', '#FF7043', '#3949AB', '#8BC34A','#C62828'];
+  chartColors = ['#FFCDD2', '#9E9E9E', '#FF7043', '#3949AB', '#8BC34A', '#C62828'];
 
   private settori: Settore[] = [];
   private countRisorse: number[] = [];
 
   constructor(private settoreService: SettoreService, private risorsaService: RisorsaService) {
     this.chartOptions = {
-      
+
       series: [44, 55, 13, 43, 22, 14],
-      
+
       chart: {
         type: "donut"
-        
+
       },
       labels: ["Team A", "Team B", "Team C", "Team D", "Team E", "Team F"],
-      
+
       responsive: [
         {
           breakpoint: 480,
@@ -82,22 +82,40 @@ export class PieChartComponent implements OnInit {
     })
   }
 
-  onClickButtonStipendioRALMedio(): void{
+  onClickButtonStipendioRALMedio(): void {
     this.risorsaService.getAllRisorse().subscribe(risorseInput => {
       let seriesNumeroDipendentiPerSettore: number[] = this.caricaSeriesNumeroDipendenti(this.settori, risorseInput);
       let seriesStipendioPerSettore: number[] = this.caricaSeriesStipendiRALTotali(this.settori, risorseInput);
       let series: number[] = [];
-      for(let i=0; i < seriesNumeroDipendentiPerSettore.length; i++){
-        if(seriesNumeroDipendentiPerSettore[i] === 0){
+      for (let i = 0; i < seriesNumeroDipendentiPerSettore.length; i++) {
+        if (seriesNumeroDipendentiPerSettore[i] === 0) {
           series.push(0);
         }
-        else{
-          series.push(Math.round(seriesStipendioPerSettore[i]/seriesNumeroDipendentiPerSettore[i]));
+        else {
+          series.push(Math.round(seriesStipendioPerSettore[i] / seriesNumeroDipendentiPerSettore[i]));
         }
       }
       this.chartOptions.series = series;
     })
-    
+
+  }
+
+  onClickButtonEtaMedia(): void {
+    this.risorsaService.getAllRisorse().subscribe(risorseInput => {
+      let seriesNumeroDipendentiPerSettore: number[] = this.caricaSeriesNumeroDipendenti(this.settori, risorseInput);
+      let seriesEtaTotalePerSettore: number[] = this.caricaSeriesEtaTotale(this.settori, risorseInput);
+      let series: number[] = [];
+      for (let i = 0; i < seriesNumeroDipendentiPerSettore.length; i++) {
+        if (seriesNumeroDipendentiPerSettore[i] === 0) {
+          series.push(0);
+        }
+        else {
+          series.push(Math.round(seriesEtaTotalePerSettore[i] / seriesNumeroDipendentiPerSettore[i]));
+        }
+      }
+      this.chartOptions.series = series;
+    })
+
   }
 
   caricaSeriesNumeroDipendenti(settori: Settore[], risorse: Risorsa[]): number[] {
@@ -122,6 +140,20 @@ export class PieChartComponent implements OnInit {
       for (let i = 0; i < series.length; i++) {
         if (settori[i].codice == risorsaItem.settore.codice && +risorsaItem.stipendioRAL) {
           series[i] += +risorsaItem.stipendioRAL;
+        }
+      }
+
+    });
+    return series
+  }
+
+  caricaSeriesEtaTotale(settori: Settore[], risorse: Risorsa[]): number[] {
+    let series: number[] = [];
+    settori.forEach(settoreItem => series.push(0));
+    risorse.forEach(risorsaItem => {
+      for (let i = 0; i < series.length; i++) {
+        if (settori[i].codice == risorsaItem.settore.codice) {
+          series[i] += Risorsa.getEta(risorsaItem);
         }
       }
 

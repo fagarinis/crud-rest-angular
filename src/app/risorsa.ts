@@ -1,6 +1,7 @@
 import { Settore } from './settore';
 import { Regione, Provincia, Comune } from './place';
 
+
 export class Risorsa {
     _id: string = "";
     nome: string = "";
@@ -14,11 +15,23 @@ export class Risorsa {
         comune: Comune
     };
 
-    constructor(){
+    public static getEta(risorsa: Risorsa) {
+        let timeDiff = (Date.now() - new Date(risorsa.dataNascita).getTime());
+        let age = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+        return Math.max(0, age);
+    };
+
+    constructor() {
         this.residenza = {
             regione: null,
             provincia: null,
             comune: null
         }
     }
+
+
+
 }
+
+
+
